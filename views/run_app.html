@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../css/run.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Run App</title>
+</head>
+<body>
+<div style="background-color: #2b2b2b">
+    <div id="body">
+        <div id="uploadRow">
+            <img id="reset" style="padding-top: 5vh" height="75 px" src="../run_img/reset.svg">
+            <div style="padding-top: 5vh" id="timeHead">
+                Time:
+            </div>
+            <img id="upload" style="padding-top: 5vh" height="70 px" src="../run_img/upload.svg">
+        </div>
+
+        <div id="time">00:00:00</div>
+        <div id="speedHead">Speed:</div>
+        <div id="speedRow">
+            <div id="decrease" style="font-size: 8rem">-</div>
+            <div id="speed">0.0 mph</div>
+            <div id="increase" style="font-size: 5rem">+</div>
+        </div>
+        <div id="distanceHead">Distance:</div>
+        <div style="padding-bottom: 40px" id="distance">0.00 miles</div>
+
+    </div>
+    <div id="navbar">
+        <img id="run" height="50px" style="padding-top: 10px" src="../run_img/run.svg">
+        <img id="data" height="40px" style="padding-top: 10px"  src="../run_img/graph.svg">
+        <img id="settings" height="40px" style="padding-top: 10px"  src="../run_img/settings.svg">
+    </div>
+</div>
+
+<script src="../client-scripts/run.js" rel="script" type="text/javascript"></script>
+<script src="../client-scripts/events.js" rel="script" type="text/javascript"></script>
+
+
+</body>
+</html>

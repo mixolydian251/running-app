@@ -1,3 +1,5 @@
+
+
  // Events responsible for view navigation
     function navigate() {
         var selectType;
@@ -26,21 +28,21 @@
      // Reset time
         if(reset){
             reset.addEventListener(selectType, ()=> {
-                window.location.replace("http://localhost:63342/runningApp/run_app/views/run_app.html");
+                window.location.replace("http://" + window.location.host + "/runningApp/views/run_app.html");
             });
         }
 
-        if (window.location.pathname !== "/runningApp/run_app/views/run_app.html")
+        if (window.location.pathname !== "/run_app/views/run_app.html")
         run.addEventListener(selectType, ()=> {
-            window.location.replace("http://localhost:63342/runningApp/run_app/views/run_app.html");
+            window.location.replace("http://" + window.location.host + "/runningApp/views/run_app.html");
         });
 
         data.addEventListener(selectType, ()=> {
-            window.location.replace("http://localhost:63342/runningApp/run_app/views/data.html");
+            window.location.replace("http://" + window.location.host + "/runningApp/views/data.html");
         });
 
         settings.addEventListener(selectType, ()=> {
-            window.location.replace("http://localhost:63342/runningApp/run_app/views/settings.html");
+            window.location.replace("http://" + window.location.host + "/runningApp/views/settings.html");
         });
     }
 
