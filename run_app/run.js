@@ -1,26 +1,28 @@
 
-
-
 (function main() {
+ // time vars
     var mili = 0;
     var sec = 0;
     var min = 0;
-    var running = 'new';
-    var timer;
-    var mph = 0;
-    var distanceTraveledPrevious = 0;
-    var distanceTraveledAtSpeed = 0;
-    var totalDistance = 0;
     var startTime = 0;
     var totalTime = 0;
     var runTime = 0;
     var newTime = 0;
+ // state vars
+    var running = 'new';
+    var timer;
+ //speed & distance vars
+    var mph = 0;
+    var distanceTraveledPrevious = 0;
+    var distanceTraveledAtSpeed = 0;
+    var totalDistance = 0;
+ // event vars
     var selectType;
-
     var xStart;
     var xEnd;
 
-    //const navbar = document.getElementById('navbar');
+ // Elements for listeners/ manip
+    const navbar = document.getElementById('navbar');
     const time = document.getElementById('time');
     const elapsedTime = document.getElementById('time');
     const up = document.getElementById('increase');
@@ -29,7 +31,16 @@
     const distance = document.getElementById('distance');
     const speedRow = document.getElementById('speedRow');
 
+ // Resets time point on ∆v for cumulative distance
+    function newRelativeTime () {
+        clearInterval(timer);
+        totalTime = runTime;
+        distanceTraveledPrevious = totalDistance;
+        newTime = new Date().getTime();
+        startTimer(newTime);
+    }
 
+ // Starts Timer and Calculates distance
     function startTimer(newTime) {
 
         timer = setInterval(() => {
@@ -37,7 +48,7 @@
                 runTime = endTime - newTime + totalTime;
                 var lap = endTime - newTime;
 
-
+             // Converts ms into sec and min
                 if (runTime > 999) {
                     if (min > 0){
                         sec = Math.floor(runTime / 1000) - (min * 60)
@@ -54,21 +65,21 @@
                         sec = 0;
                         min += 1;
                     }
-
-                    distanceTraveledAtSpeed = (lap/(1000*60*60) * mph);
-                    totalDistance = distanceTraveledPrevious + distanceTraveledAtSpeed
-
                 }
+
+             // Calculates Distance
+                distanceTraveledAtSpeed = (lap/(1000*60*60) * mph);
+                totalDistance = distanceTraveledPrevious + distanceTraveledAtSpeed;
+
+             // Formats time and distance
                 if (sec < 10) {
                     var strSec = `0${sec}`;
-                }
-                else {
+                } else {
                     strSec = `${sec}`;
                 }
                 if (min < 10) {
                     var strMin = `0${min}`;
-                }
-                else {
+                } else {
                     strMin = `${min}`;
                 }
                 if (runTime < 999) {
@@ -89,32 +100,33 @@
                     strMili = strMili.slice(0, -1);
                 }
 
+             // Print Time & Distance
                 elapsedTime.innerHTML = `${strMin}:${strSec}:${strMili}`;
-
                 distance.innerHTML = `${(totalDistance).toFixed(2)} miles`;
             }
             , 40);
     }
 
 
-
-
+ // Event compatibility for mobile or desktop
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         selectType = 'touchend'
     } else {selectType = 'click'}
     
 
+ ///////////////////Listeners//////////////////////////
+
+ // Find initial touch location
     document.addEventListener('touchstart', (e) => {
         xStart = e.changedTouches[0].pageX;
     });
 
-
+ // Starts or Stops timer based on running state.
     time.addEventListener(selectType, (e) => {
         if (running === 'new') {
             running = 'running';
             startTime = new Date().getTime();
             startTimer(startTime);
-
         } else if (running === 'running') {
             running = 'stopped';
             clearInterval(timer);
@@ -127,59 +139,43 @@
         }
     });
 
+ // Increases speed by the '+' control.
     up.addEventListener(selectType, (e) => {
-
         e.preventDefault();
         mph += 0.5;
         runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
         if(running === 'running'){
-            clearInterval(timer);
-            totalTime = runTime;
-            distanceTraveledPrevious = totalDistance;
-            newTime = new Date().getTime();
-            startTimer(newTime);
+            newRelativeTime()
         }
-
     });
 
+ // Increases speed by the '-' control.
     down.addEventListener(selectType, (e) => {
         e.preventDefault();
         if (mph >= 0.5) {
             mph -= 0.5;
             runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
             if(running === 'running'){
-                clearInterval(timer);
-                totalTime = runTime;
-                distanceTraveledPrevious = totalDistance;
-                newTime = new Date().getTime();
-                startTimer(newTime);
+                newRelativeTime()
             }
         }
     });
 
+ // Slide finger on mph element to inc/dec (Mobile feature)
     speedRow.addEventListener('touchmove', (e) => {
         xEnd = e.changedTouches[0].pageX;
         if (xStart < xEnd) {
             mph += (Math.abs(xEnd - xStart) / 1500)
-        }
-        else if (xStart > xEnd && mph > 0) {
+        } else if (xStart > xEnd && mph > 0) {
             mph -= (Math.abs(xEnd - xStart) / 1500)
         }
         runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
         if(running === 'running'){
-            clearInterval(timer);
-            totalTime = runTime;
-            distanceTraveledPrevious = totalDistance;
-            newTime = new Date().getTime();
-            startTimer(newTime);
+            newRelativeTime()
         }
     });
 })();
 
-
-// addEventListener('DOMContentLoaded', () => {
-//     main()
-// });
 
 
 
