@@ -28,22 +28,27 @@
      // Reset time
         if(reset){
             reset.addEventListener(selectType, ()=> {
-                window.location.replace("http://" + window.location.host + "/runningApp/views/run_app.html");
+                window.location.replace("http://" + window.location.host + "/");
             });
         }
 
-        if (window.location.pathname !== "/run_app/views/run_app.html")
-        run.addEventListener(selectType, ()=> {
-            window.location.replace("http://" + window.location.host + "/runningApp/views/run_app.html");
-        });
+        if (window.location.pathname !== "/"){
+            run.addEventListener(selectType, ()=> {
+                window.location.replace("http://" + window.location.host + "/");
+            });
+        }
 
-        data.addEventListener(selectType, ()=> {
-            window.location.replace("http://" + window.location.host + "/runningApp/views/data.html");
-        });
+        if (window.location.pathname !== "/data"){
+            data.addEventListener(selectType, ()=> {
+                window.location.replace("http://" + window.location.host + "/data");
+            });
+        }
 
-        settings.addEventListener(selectType, ()=> {
-            window.location.replace("http://" + window.location.host + "/runningApp/views/settings.html");
-        });
+        if (window.location.pathname !== "/settings"){
+            settings.addEventListener(selectType, ()=> {
+                window.location.replace("http://" + window.location.host + "/settings");
+            });
+        }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
