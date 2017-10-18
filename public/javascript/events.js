@@ -8,7 +8,6 @@
         const run = document.getElementById('run');
         const data = document.getElementById('data');
         const settings = document.getElementById('settings');
-        const upload = document.getElementById('upload');
         const reset = document.getElementById('reset');
 
      // Event compatibility
@@ -16,15 +15,6 @@
             selectType = 'touchend'
         } else {selectType = 'click'}
 
-     // Uploads
-        if(upload){
-            upload.addEventListener(selectType, () => {
-                var push = confirm('Do you want to save this run?');
-                if (push === true){
-                    alert('Your run has been saved!')
-                }
-            });
-        }
      // Reset time
         if(reset){
             reset.addEventListener(selectType, ()=> {

@@ -8,10 +8,14 @@
     var totalTime = 0;
     var runTime = 0;
     var newTime = 0;
+    var lap = 0;
+
  // state vars
     var running = 'new';
     var timer;
+    var checkDistance;
  //speed & distance vars
+    var distanceCheck = 0;
     var mph = 0;
     var distanceTraveledPrevious = 0;
     var distanceTraveledAtSpeed = 0;
@@ -21,8 +25,16 @@
     var xStart;
     var xEnd;
 
+ // Data-sets
+    var distanceInterval = [];
+    var speedChanges =[];
+    var speedTimes = [];
+    var changeTimes = [];
+
+
+
  // Elements for listeners/ manip
-    const navbar = document.getElementById('navbar');
+    const upload = document.getElementById('upload');
     const time = document.getElementById('time');
     const elapsedTime = document.getElementById('time');
     const up = document.getElementById('increase');
@@ -40,13 +52,25 @@
         startTimer(newTime);
     }
 
+ // Checks runners time every 0.05 miles, stores in distanceInterval array
+    function check_distance() {
+        checkDistance = setInterval(() => {
+            console.log('checking for distance');
+            if (totalDistance >= (distanceCheck + 0.05)){
+                console.log('distance changed!');
+                distanceInterval.push(runTime);
+                distanceCheck = totalDistance;
+            }
+        }, 500);
+    }
+
  // Starts Timer and Calculates distance
     function startTimer(newTime) {
 
         timer = setInterval(() => {
                 var endTime = new Date().getTime();
                 runTime = endTime - newTime + totalTime;
-                var lap = endTime - newTime;
+                lap = endTime - newTime;
 
              // Converts ms into sec and min
                 if (runTime > 999) {
@@ -107,7 +131,6 @@
             , 40);
     }
 
-
  // Event compatibility for mobile or desktop
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         selectType = 'touchend'
@@ -116,6 +139,21 @@
 
  ///////////////////Listeners//////////////////////////
 
+ // Uploads
+    function listenForUpload (){
+        upload.addEventListener(selectType, () => {
+            var push = confirm('Do you want to save this run?');
+            if (push === true){
+                console.log(`Miliseconds: ${mili}`);
+                console.log(`Seconds: ${sec}`);
+                console.log(`Minutes: ${min}`);
+                console.log(`Total_time: ${totalTime}`);
+                console.log(`Distance: ${totalDistance}`);
+                console.log(`Run times in 0.05 mi. increments: ${distanceInterval}`);
+            }
+        });
+    }
+
  // Find initial touch location
     document.addEventListener('touchstart', (e) => {
         xStart = e.changedTouches[0].pageX;
@@ -123,57 +161,64 @@
 
  // Starts or Stops timer based on running state.
     time.addEventListener(selectType, (e) => {
+        e.preventDefault();
         if (running === 'new') {
             running = 'running';
             startTime = new Date().getTime();
             startTimer(startTime);
+            check_distance();
         } else if (running === 'running') {
             running = 'stopped';
             clearInterval(timer);
+            clearInterval(checkDistance);
             totalTime = runTime;
             distanceTraveledPrevious = totalDistance;
+         // Uploads
+            listenForUpload();
         } else if (running === 'stopped') {
             running = 'running';
             newTime = new Date().getTime();
             startTimer(newTime);
+            check_distance();
         }
     });
 
  // Increases speed by the '+' control.
     up.addEventListener(selectType, (e) => {
         e.preventDefault();
-        mph += 0.5;
-        runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
         if(running === 'running'){
             newRelativeTime()
         }
+        mph += 0.5;
+        runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
     });
 
  // Increases speed by the '-' control.
     down.addEventListener(selectType, (e) => {
         e.preventDefault();
         if (mph >= 0.5) {
-            mph -= 0.5;
-            runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
             if(running === 'running'){
                 newRelativeTime()
             }
+            mph -= 0.5;
+            runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
         }
     });
 
- // Slide finger on mph element to inc/dec (Mobile feature)
-    speedRow.addEventListener('touchmove', (e) => {
-        xEnd = e.changedTouches[0].pageX;
-        if (xStart < xEnd) {
-            mph += (Math.abs(xEnd - xStart) / 1500)
-        } else if (xStart > xEnd && mph > 0) {
-            mph -= (Math.abs(xEnd - xStart) / 1500)
-        }
-        runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
-        if(running === 'running'){
-            newRelativeTime()
-        }
-    });
+ // // Slide finger on mph element to inc/dec (Mobile feature)
+ //    speedRow.addEventListener('touchmove', (e) => {
+ //        xEnd = e.changedTouches[0].pageX;
+ //        if (xStart < xEnd) {
+ //            mph += (Math.abs(xEnd - xStart) / 1500)
+ //        } else if (xStart > xEnd && mph > 0) {
+ //            mph -= (Math.abs(xEnd - xStart) / 1500)
+ //        }
+ //        runSpeed.innerHTML = `${mph.toFixed(1)} mph`;
+ //        if(running === 'running'){
+ //            newRelativeTime()
+ //        }
+ //    });
+
 })();
 
 
