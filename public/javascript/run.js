@@ -9,17 +9,20 @@
     var runTime = 0;
     var newTime = 0;
     var lap = 0;
+    var printedTime = '00.00.00';
 
  // state vars
     var running = 'new';
     var timer;
     var checkDistance;
+
  //speed & distance vars
     var distanceCheck = 0;
     var mph = 0;
     var distanceTraveledPrevious = 0;
     var distanceTraveledAtSpeed = 0;
     var totalDistance = 0;
+
  // event vars
     var selectType;
     var xStart;
@@ -27,10 +30,6 @@
 
  // Data-sets
     var distanceInterval = [];
-    var speedChanges =[];
-    var speedTimes = [];
-    var changeTimes = [];
-
 
 
  // Elements for listeners/ manip
@@ -42,6 +41,28 @@
     const runSpeed = document.getElementById('speed');
     const distance = document.getElementById('distance');
     const speedRow = document.getElementById('speedRow');
+
+ // Submits run data to API
+    function submission() {
+        console.log('submit function running..');
+        var run = {
+            run_time: {
+                total_time: totalTime,
+                formatted_time: printedTime
+            },
+            distance: totalDistance,
+            mile_marks: distanceInterval,
+            upload_time: new Date().getTime()
+        };
+
+     // sends run to app.js
+        axios.post('/uploads', run)
+            .then(function(response){
+                console.log('saved successfully', response)
+            }).catch((error) => {
+            console.log(error)
+        });
+    }
 
  // Resets time point on ∆v for cumulative distance
     function newRelativeTime () {
@@ -55,9 +76,7 @@
  // Checks runners time every 0.05 miles, stores in distanceInterval array
     function check_distance() {
         checkDistance = setInterval(() => {
-            console.log('checking for distance');
             if (totalDistance >= (distanceCheck + 0.05)){
-                console.log('distance changed!');
                 distanceInterval.push(runTime);
                 distanceCheck = totalDistance;
             }
@@ -124,8 +143,10 @@
                     strMili = strMili.slice(0, -1);
                 }
 
+
+                printedTime = `${strMin}:${strSec}:${strMili}`;
              // Print Time & Distance
-                elapsedTime.innerHTML = `${strMin}:${strSec}:${strMili}`;
+                elapsedTime.innerHTML = printedTime ;
                 distance.innerHTML = `${(totalDistance).toFixed(2)} miles`;
             }
             , 40);
@@ -144,12 +165,7 @@
         upload.addEventListener(selectType, () => {
             var push = confirm('Do you want to save this run?');
             if (push === true){
-                console.log(`Miliseconds: ${mili}`);
-                console.log(`Seconds: ${sec}`);
-                console.log(`Minutes: ${min}`);
-                console.log(`Total_time: ${totalTime}`);
-                console.log(`Distance: ${totalDistance}`);
-                console.log(`Run times in 0.05 mi. increments: ${distanceInterval}`);
+                submission();
             }
         });
     }

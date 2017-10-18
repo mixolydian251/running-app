@@ -1,0 +1,27 @@
+{
+  "name": "runningapp",
+  "version": "1.0.0",
+  "description": "a web application to track data on user runs, and display data.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mixolydian251/running-app.git"
+  },
+  "author": "Jordan Hensley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mixolydian251/running-app/issues"
+  },
+  "homepage": "https://github.com/mixolydian251/running-app#readme",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "hbs": "^4.0.1",
+    "mongodb": "^2.2.33",
+    "mongoose": "^4.12.3"
+  }
+}
