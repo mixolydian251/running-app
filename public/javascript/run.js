@@ -166,6 +166,7 @@
             var push = confirm('Do you want to save this run?');
             if (push === true){
                 submission();
+                window.location.replace("http://" + window.location.host + "/data");
             }
         });
     }

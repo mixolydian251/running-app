@@ -1,30 +1,33 @@
-root{
-    background-color: #232323;
-
+:root{
+    --navColor: rgba(179, 31, 35, 0.95);
+    --bgColor: #232323;
+    --fontColor: #f6f6f6;
 }
+
 html{
     height: 100vh;
     width: 100vw;
-    background-color: #232323;
-    color: #f6f6f6;
+    background-color: var(--bgColor);
+    color: var(--fontColor);
     margin: 0;
     display: flex;
     font-size: 16px;
 
 }
 body{
-    background-color: #232323;
+    background-color: var(--bgColor);
     height: 100vh;
     width: 100vw;
     display: inherit;
     font-family: 'Roboto', sans-serif;
+    font-variant: petite-caps;
+    font-weight: 100;
 }
-
 
 .bodydefault{
     font-family: 'Roboto', sans-serif;
-    background-color: #232323;
-    color: #f6f6f6;
+    background-color: var(--bgColor);
+    color: var(--fontColor);
     height: 89vh;
     width: 100vw;
     font-size: 3rem;
@@ -36,10 +39,10 @@ body{
 
 #navbar{
     display: flex;
-    background-color: rgba(179, 31, 35, 0.95);
+    background-color: var(--navColor);
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
-    box-shadow: 0 -5px 50px #222222;
+    box-shadow: 0 10px 50px #222222;
     width: 100vw;
     height: 11vh;
     justify-content: space-around;
@@ -74,7 +77,7 @@ body{
     display: flex;
     width: 100vw;
     flex-direction: row;
-    justify-content: inherit;
+    justify-content: space-around;
     align-items: center;
 }
 

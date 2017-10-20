@@ -1,4 +1,5 @@
 
+var theme = 'red';
 
  // Events responsible for view navigation
     function navigate() {
@@ -40,9 +41,29 @@
             });
         }
     }
-
+    
     window.addEventListener('DOMContentLoaded', () => {
         navigate()
     });
 
+function changeTheme() {
+    var bg;
+    var nav;
+    var font;
+
+    if (theme === 'red'){
+        bg = "#ffffff";
+        nav = "#0380ff";
+        font = "#111111";
+        theme = 'blue';
+    } else if(theme === 'blue'){
+        bg = "#232323";
+        nav = "rgba(179, 31, 35, 0.95)";
+        font = "#f6f6f6";
+        theme = 'red';
+    }
+    document.body.style.setProperty('--bgColor', bg);
+    document.body.style.setProperty('--navColor', nav);
+    document.body.style.setProperty('--fontColor', font);
+}
 

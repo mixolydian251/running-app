@@ -4,17 +4,31 @@ var runDates = [];
 var runDistances = [];
 var mileMarks = [];
 var mileMarkTimes = ["0:00"];
+var mileMarkTimesMs = [0];
 var mileMarker = 0;
+var numberOfRunsDisplayed = 5;
 
 axios.get('/uploads', {})
     .then(function (res) {
         var lastRun = res.data.runs.length - 1;
+        var numberOfRuns = res.data.runs.length;
         var lastRunMarks = res.data.runs[lastRun].mile_marks.length;
 
-        res.data.runs.forEach((item) => {
-            runDates.push(moment(item.upload_time).format("MM/D @h :mma"));
-            runDistances.push(item.distance.toFixed(2));
-        });
+
+
+        // Last 'X' runs
+        for(i = (numberOfRuns - numberOfRunsDisplayed); i < numberOfRuns; i++ ){
+            runDates.push(moment(res.data.runs[i].upload_time).format("MM/D h:mma"));
+            runDistances.push(res.data.runs[i].distance.toFixed(2));
+        }
+
+        /*
+        Gathers All past Runs
+         */
+        // res.data.runs.forEach((item) => {
+        //     runDates.push(moment(item.upload_time).format("MM/D h:mma"));
+        //     runDistances.push(item.distance.toFixed(2));
+        // });
 
         res.data.runs[lastRun].mile_marks.forEach((item) => {
             var min = moment.duration(item).minutes();
@@ -22,16 +36,14 @@ axios.get('/uploads', {})
             if (sec < 10){
                 sec = `0${sec}`
             }
-            mileMarkTimes.push(`${min}:${sec}`)
+            mileMarkTimes.push(`${min}:${sec}`);
+            mileMarkTimesMs.push(item/1000)
         });
 
         for (var i = 0; i < lastRunMarks; i++){
             mileMarks.push(mileMarker.toFixed(2));
             mileMarker += 0.05;
         }
-
-        console.log(mileMarks);
-        console.log(mileMarkTimes);
 
         drawGraphs();
 
@@ -76,7 +88,7 @@ function drawGraphs() {
             maintainAspectRatio: false,
             title: {
                 display: true,
-                text: "All Previous Runs",
+                text: `Last ${numberOfRunsDisplayed} runs`,
                 fontColor: "white",
                 fontSize: 13
             },
@@ -103,10 +115,10 @@ function drawGraphs() {
     var lastRun = new Chart(ctx2, {
         type: 'line',
         data: {
-            labels: mileMarkTimes,
+            labels: mileMarks,
             datasets: [{
-                label: 'Time for every 0.05 miles',
-                data: mileMarks,
+                label: 'time (seconds)',
+                data: mileMarkTimesMs,
                 backgroundColor: [
                     'rgba(255, 255, 255, 0.3)'
                 ],
