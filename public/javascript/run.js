@@ -31,7 +31,6 @@
  // Data-sets
     var distanceInterval = [];
 
-
  // Elements for listeners/ manip
     const upload = document.getElementById('upload');
     const time = document.getElementById('time');
