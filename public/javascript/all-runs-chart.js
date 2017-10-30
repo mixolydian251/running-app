@@ -15,20 +15,19 @@ axios.get('/uploads', {})
         var lastRunMarks = res.data.runs[lastRun].mile_marks.length;
 
 
-
-        // Last 'X' runs
-        for(i = (numberOfRuns - numberOfRunsDisplayed); i < numberOfRuns; i++ ){
-            runDates.push(moment(res.data.runs[i].upload_time).format("MM/D h:mma"));
-            runDistances.push(res.data.runs[i].distance.toFixed(2));
+        if (numberOfRuns < 5){
+          //Gathers All past runs
+            res.data.runs.forEach((item) => {
+                 runDates.push(moment(item.upload_time).format("MM/D h:mma"));
+                 runDistances.push(item.distance.toFixed(2));
+            }); 
+        } else {
+         // Last 'X' runs
+            for(i = (numberOfRuns - numberOfRunsDisplayed); i < numberOfRuns; i++ ){
+                runDates.push(moment(res.data.runs[i].upload_time).format("MM/D h:mma"));
+                runDistances.push(res.data.runs[i].distance.toFixed(2));
+            }
         }
-
-        /*
-        Gathers All past Runs
-         */
-        // res.data.runs.forEach((item) => {
-        //     runDates.push(moment(item.upload_time).format("MM/D h:mma"));
-        //     runDistances.push(item.distance.toFixed(2));
-        // });
 
         res.data.runs[lastRun].mile_marks.forEach((item) => {
             var min = moment.duration(item).minutes();

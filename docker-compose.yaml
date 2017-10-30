@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+
+  my_mongodb:
+    image: mongo
+    deploy: 
+      replicas: 1
+    ports:
+      - "27017:27017"
+    networks:
+      - my-net
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+
+  app:
+    image: mixolydian251/run-app
+    deploy: 
+      replicas: 1
+    ports: 
+      - "80:3000"
+    networks:
+      - my-net
+    depends_on:
+      - my_mongodb
+       
+
+networks:
+  my-net:
+
+volumes:
+  mongo-data:
+  mongo-config:
